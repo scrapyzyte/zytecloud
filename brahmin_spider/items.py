@@ -3,18 +3,18 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+from scrapy.item import Item, Field
 
 
-class BrahminSpiderItem(scrapy.Item):
-    product_name = scrapy.Field()
-    product_id = scrapy.Field()
-    link = scrapy.Field()
-    designer = scrapy.Field()
-    color = scrapy.Field()
-    price = scrapy.Field()
-    sale_price = scrapy.Field()
-    stock_status = scrapy.Field()
-    image_urls = scrapy.Field()
-    description = scrapy.Field()
-    raw_description = scrapy.Field()
+class BrahminSpiderItem(Item):
+    product_name = Field()
+    product_id = Field()
+    link = Field()
+    designer = Field()
+    color = Field()
+    price = Field()
+    sale_price = Field()
+    stock_status = Field()
+    image_urls = Field()
+    description = Field()
+    raw_description = Field()
