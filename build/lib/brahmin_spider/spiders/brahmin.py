@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import simplejson
 from scrapy.http import Request
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
@@ -12,8 +12,6 @@ class BrahminSpider(CrawlSpider):
     name = "brahmin"
     allowed_domains = ["brahmin.com"]
     start_urls = ["https://www.brahmin.com/home/"]
-
-    download_delay = 0.4
 
     rules = (
         Rule(LinkExtractor(restrict_css=".nav-link")),
@@ -37,7 +35,7 @@ class BrahminSpider(CrawlSpider):
             )
 
     def parse_item(self, response, product_name):
-        product = response.json()["product"]
+        product = simplejson.loads(response.body)["product"]
 
         loader = ProductLoader(item=BrahminSpiderItem(), response=response)
         # Default loaders

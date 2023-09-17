@@ -39,4 +39,4 @@ class ProductLoader(ItemLoader):
         self.add_value("sale_price", sale_price)
 
     def add_item_images(self, product):
-        return [i["absURL"] for i in product["images"]["hi-res"]]
+        self.add_value("image_urls", [i["absURL"] for i in product["images"]["hi-res"]])
