@@ -13,8 +13,6 @@ class BrahminSpider(CrawlSpider):
     allowed_domains = ["brahmin.com"]
     start_urls = ["https://www.brahmin.com/home/"]
 
-    download_delay = 0.4
-
     rules = (
         Rule(LinkExtractor(restrict_css=".nav-link")),
         Rule(
