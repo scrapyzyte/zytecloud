@@ -20,5 +20,4 @@ spider_art/dot_files/*
 spider_art/gallery/*
 /.python-version
 .DS_Store
-.python-version
 __pycache__
