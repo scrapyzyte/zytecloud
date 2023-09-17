@@ -2,7 +2,7 @@ import html
 import html2text
 from scrapy.loader import ItemLoader
 from brahmin_spider.items import BrahminSpiderItem
-from scrapy.loader.processors import TakeFirst, MapCompose, Join, Compose
+from itemloaders.processors import TakeFirst, MapCompose, Join, Compose
 
 
 def escape_html(text):
