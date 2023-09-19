@@ -16,7 +16,7 @@ class BrahminSpiderItem:
     color: Optional[str] = field(default=None)
     price: Optional[float] = field(default=None)
     sale_price: Optional[float] = field(default=None)
-    stock_status: Optional[str] = field(default=None)
+    stock_status: Optional[bool] = field(default=None)
     image_urls: Optional[list] = field(default=None)
     description: Optional[str] = field(default=None)
     raw_description: Optional[str] = field(default=None)
