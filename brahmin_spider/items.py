@@ -20,19 +20,3 @@ class BrahminSpiderItem:
     image_urls: Optional[list] = field(default=None)
     description: Optional[str] = field(default=None)
     raw_description: Optional[str] = field(default=None)
-
-# from scrapy.item import Item, Field
-#
-#
-# class BrahminSpiderItem(Item):
-#     product_name = Field()
-#     product_id = Field()
-#     link = Field()
-#     designer = Field()
-#     color = Field()
-#     price = Field()
-#     sale_price = Field()
-#     stock_status = Field()
-#     image_urls = Field()
-#     description = Field()
-#     raw_description = Field()

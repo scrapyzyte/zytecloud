@@ -1,8 +1,11 @@
 import html
+from abc import ABC, abstractmethod
+
 import html2text
+from itemloaders.processors import Compose, Join, MapCompose, TakeFirst
 from scrapy.loader import ItemLoader
+
 from brahmin_spider.items import BrahminSpiderItem
-from itemloaders.processors import TakeFirst, MapCompose, Join, Compose
 
 
 def escape_html(text):
@@ -18,7 +21,17 @@ def strip_html(html_text):
     return text
 
 
-class ProductLoader(ItemLoader):
+class DataLoader(ABC):
+    @abstractmethod
+    def add_item_prices(self, product):
+        pass
+
+    @abstractmethod
+    def add_item_images(self, product):
+        pass
+
+
+class ProductLoader(DataLoader, ItemLoader):
     default_item_class = BrahminSpiderItem  # Specify the item class for this loader
 
     description_in = MapCompose(escape_html, strip_html)

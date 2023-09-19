@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import simplejson
+from pyquery import PyQuery
 from scrapy.http import Request
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
-from pyquery import PyQuery
+
 from brahmin_spider.items import BrahminSpiderItem
 from brahmin_spider.loaders import ProductLoader
 
@@ -22,6 +23,15 @@ class BrahminSpider(CrawlSpider):
             LinkExtractor(restrict_css=".product-tile"), callback="parse_item_variants"
         ),
     )
+
+    custom_settings = {
+        "CONCURRENT_REQUESTS": 2,
+        "DOWNLOAD_DELAY": 2,
+        "AUTOTHROTTLE_ENABLED": True,
+        "AUTOTHROTTLE_TARGET_CONCURRENCY": 1.0,
+        "AUTOTHROTTLE_START_DELAY": 5,
+        "AUTOTHROTTLE_MAX_DELAY": 10,
+    }
 
     def parse_item_variants(self, response):
         pq = PyQuery(response.body)
@@ -52,4 +62,5 @@ class BrahminSpider(CrawlSpider):
         loader.add_item_images(product)
 
         item = loader.load_item()
+
         yield item
