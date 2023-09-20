@@ -45,6 +45,9 @@ class BrahminSpider(CrawlSpider):
             )
 
     def parse_item(self, response, product_name):
+        user_agent = response.request.headers.get("User-Agent")
+        self.logger.info(f"USER_AGENT: {user_agent}")
+
         product = simplejson.loads(response.body)["product"]
 
         loader = ProductLoader(item=BrahminSpiderItem(), response=response)
@@ -68,6 +71,6 @@ class BrahminSpider(CrawlSpider):
         item = loader.load_item()
 
         from pprint import pprint
-
         pprint(item)
+
         yield item
