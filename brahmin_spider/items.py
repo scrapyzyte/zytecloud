@@ -19,4 +19,4 @@ class BrahminSpiderItem:
     stock_status: Optional[bool] = field(default=None)
     image_urls: Optional[list] = field(default=None)
     description: Optional[str] = field(default=None)
-    raw_description: Optional[str] = field(default=None)
+    raw_description: Optional[list] = field(default=None)

@@ -51,26 +51,23 @@ class BrahminSpider(CrawlSpider):
         product = simplejson.loads(response.body)["product"]
 
         loader = ProductLoader(item=BrahminSpiderItem(), response=response)
-        try:
-            # Default loaders
-            loader.add_value("product_name", product_name)
-            loader.add_value("product_id", product["id"])
-            loader.add_value("link", response.urljoin(product["selectedProductUrl"]))
-            loader.add_value("designer", "Brahmin")
-            loader.add_value("color", product["color"])
-            loader.add_value("stock_status", product["available"])
-            loader.add_value("description", product["shortDescription"])
-            loader.add_value("raw_description", product["shortDescription"])
-            # Custom loaders
-            loader.add_item_prices(product)
-            loader.add_item_images(product)
-        except ValueError as e:
-            self.logger.error(f"Item validation failed: {str(e)}")
-            return
+        # Default loaders
+        loader.add_value("product_name", product_name)
+        loader.add_value("product_id", product["id"])
+        loader.add_value("link", response.urljoin(product["selectedProductUrl"]))
+        loader.add_value("designer", "Brahmin")
+        loader.add_value("color", product["color"])
+        loader.add_value("stock_status", product["available"])
+        loader.add_value("description", product["shortDescription"])
+        loader.add_value("raw_description", product["shortDescription"])
+        # Custom loaders
+        loader.add_item_prices(product)
+        loader.add_item_images(product)
 
         item = loader.load_item()
 
         from pprint import pprint
+
         pprint(item)
 
         yield item

@@ -21,30 +21,6 @@ def strip_html(html_text):
     return text
 
 
-def validate_string(value):
-    if not isinstance(value, str):
-        raise ValueError("Field must be type str!")
-    return value
-
-
-def validate_float(value):
-    if not isinstance(value, float):
-        raise ValueError("Field must be type float!")
-    return value
-
-
-def validate_boolean(value):
-    if not isinstance(value, bool):
-        raise ValueError("Field must be type boolean!")
-    return value
-
-
-def validate_list(value):
-    if not isinstance(value, list):
-        raise ValueError("Field must be type list!")
-    return value
-
-
 class DataLoader(ABC):
     @abstractmethod
     def add_item_prices(self, product):
@@ -58,18 +34,19 @@ class DataLoader(ABC):
 class ProductLoader(DataLoader, ItemLoader):
     default_item_class = BrahminSpiderItem  # Specify the item class for this loader
 
-    product_name_in = MapCompose(validate_string)
-    product_id_in = MapCompose(validate_string)
-    link_in = MapCompose(validate_string)
-    designer_in = MapCompose(validate_string)
-    color_in = MapCompose(validate_string)
-    price_in = MapCompose(validate_float)
-    sale_price_in = MapCompose(validate_float)
-    stock_status_in = MapCompose(validate_boolean)
-    image_urls_in = MapCompose(validate_list)
-    description_in = MapCompose(validate_string, escape_html, strip_html)
+    # Input processors
+    description_in = MapCompose(escape_html, strip_html)
 
-    product_name_out = Join()
+    # Output processors
+    product_name_out = TakeFirst()
+    product_id_out = TakeFirst()
+    designer_out = TakeFirst()
+    color_out = TakeFirst()
+    link_out = TakeFirst()
+    price_out = TakeFirst()
+    sale_price_out = TakeFirst()
+    stock_status_out = TakeFirst()
+    description_out = Join()
 
     def add_item_prices(self, product):
         price_data = product["price"]
@@ -80,7 +57,9 @@ class ProductLoader(DataLoader, ItemLoader):
             price = float(price_data["list"]["value"])
             sale_price = float(price_data["sales"]["value"])
         else:
-            price = float(price_data["sales"]["value"]) or float(price_data["min"]["sales"]["value"])
+            price = float(price_data["sales"]["value"]) or float(
+                price_data["min"]["sales"]["value"]
+            )
 
         self.add_value("price", price)
         self.add_value("sale_price", sale_price)

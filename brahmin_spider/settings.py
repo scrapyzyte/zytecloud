@@ -64,9 +64,9 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    "brahmin_spider.pipelines.BrahminSpiderPipeline": 300,
-# }
+ITEM_PIPELINES = {
+    "brahmin_spider.pipelines.BrahminSpiderPipeline": 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -97,20 +97,20 @@ FEED_EXPORT_ENCODING = "utf-8"
 # pip install scrapy-fake-userganet
 # https://pypi.org/project/scrapy-fake-useragent/
 DOWNLOADER_MIDDLEWARES = {
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-    'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
-    'scrapy_fake_useragent.middleware.RetryUserAgentMiddleware': 401,
+    "scrapy.downloadermiddlewares.useragent.UserAgentMiddleware": None,
+    "scrapy.downloadermiddlewares.retry.RetryMiddleware": None,
+    "scrapy_fake_useragent.middleware.RandomUserAgentMiddleware": 400,
+    "scrapy_fake_useragent.middleware.RetryUserAgentMiddleware": 401,
 }
 FAKEUSERAGENT_PROVIDERS = [
-    'scrapy_fake_useragent.providers.FakeUserAgentProvider',  # this is the first provider we'll try
-    'scrapy_fake_useragent.providers.FakerProvider',  # if FakeUserAgentProvider fails, we'll use faker to generate a user-agent string for us
-    'scrapy_fake_useragent.providers.FixedUserAgentProvider',  # fall back to USER_AGENT value
+    "scrapy_fake_useragent.providers.FakeUserAgentProvider",  # this is the first provider we'll try
+    "scrapy_fake_useragent.providers.FakerProvider",  # if FakeUserAgentProvider fails, we'll use faker to generate a user-agent string for us
+    "scrapy_fake_useragent.providers.FixedUserAgentProvider",  # fall back to USER_AGENT value
 ]
 USER_AGENT = (
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0'
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0"
 )
 FAKEUSERAGENT_FALLBACK = (
-    'Mozilla/5.0 (Windows NT 11.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0'
+    "Mozilla/5.0 (Windows NT 11.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0"
 )
-FAKER_RANDOM_UA_TYPE = 'desktop'
+FAKER_RANDOM_UA_TYPE = "desktop"
