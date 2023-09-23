@@ -40,7 +40,7 @@ def validate_data_type(item_adapter, data_type, validate_list):
         field_value = item_adapter.get(field)
         if not isinstance(field_value, data_type):
             raise DropItem(
-                f"Invalid data in '{field}' field. It should be a '{type(field_value)}'."
+                f"Invalid data in '{field}' field. It should be a '{data_type}'."
             )
 
 
