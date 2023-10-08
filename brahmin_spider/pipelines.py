@@ -6,9 +6,14 @@
 
 import re
 
+import hashlib
+
 # useful for handling different item types with a single interface
+from scrapy import Request
 from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
+from scrapy.pipelines.images import ImagesPipeline
+from scrapy.utils.python import to_bytes
 
 
 def is_valid_link(link: str) -> bool:
@@ -149,3 +154,17 @@ class DuplicateItemFilterPipeline:
         self.seen_items.add(item_key)
 
         return item
+
+
+class CustomImagesPipeline(ImagesPipeline):
+    def get_media_requests(self, item, info):
+        for image_url in item["image_urls"]:
+            yield Request(image_url)
+
+    def file_path(self, request, response=None, info=None, *, item=None):
+        image_guid = hashlib.sha1(to_bytes(request.url)).hexdigest()
+        return f"{item['product_id']}/{item['color']}/full/{image_guid}.jpg"
+
+    def thumb_path(self, request, thumb_id, response=None, info=None, *, item=None):
+        thumb_guid = hashlib.sha1(to_bytes(request.url)).hexdigest()
+        return f"{item['product_id']}/{item['color']}/thumbs/{thumb_id}/{thumb_guid}.jpg"

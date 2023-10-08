@@ -66,8 +66,4 @@ class BrahminSpider(CrawlSpider):
 
         item = loader.load_item()
 
-        from pprint import pprint
-
-        pprint(item)
-
         yield item
