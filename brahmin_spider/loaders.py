@@ -8,13 +8,29 @@ from scrapy.loader import ItemLoader
 from brahmin_spider.items import BrahminSpiderItem
 
 
-def escape_html(text):
-    """Escape HTML entities e.g. replace &gt; with >"""
-    return html.unescape(text)
+def escape_html(html_text: str) -> str:
+    """
+    Escape HTML entities e.g. replace &gt; with >.
+
+    Args:
+        html_text (str): HTML text input.
+
+    Returns:
+        str: Return unescaped HTML string.
+    """
+    return html.unescape(html_text)
 
 
-def strip_html(html_text):
-    """Strips html tags out of a string."""
+def strip_html(html_text: str) -> str:
+    """
+    Strips html tags out of a string.
+
+    Args:
+        html_text (str): HTML text input.
+
+    Returns:
+        str: Return text without any html tags.
+    """
     text_maker = html2text.HTML2Text()
     text_maker.ignore_links = False
     text = text_maker.handle(html_text)
@@ -33,19 +49,20 @@ class DataLoader(ABC):
 
 class ProductLoader(DataLoader, ItemLoader):
     default_item_class = BrahminSpiderItem  # Specify the item class for this loader
+    """
+    Input and output processors are used to clean and
+    preprocess data within the Scrapy item pipeline.
 
-    # Input and output processors are used to clean and
-    # preprocess data within the Scrapy item pipeline.
-    #
-    # Purpose: Input and output processors in Scrapy are used to clean and preprocess
-    # scraped data as it flows through the Scrapy item pipeline.
-    #
-    # Usage: Input processors are applied to data when it is initially extracted from
-    # the web page, while output processors are applied before the data is stored or exported.
-    #
-    # Implementation: Processors are implemented as Python functions or methods that you
-    # define in your Scrapy project. They are applied to specific fields of the scraped items,
-    # allowing you to clean, validate, or transform the data as needed.
+    Purpose: Input and output processors in Scrapy are used to clean and preprocess
+    scraped data as it flows through the Scrapy item pipeline.
+
+    Usage: Input processors are applied to data when it is initially extracted from
+    the web page, while output processors are applied before the data is stored or exported.
+
+    Implementation: Processors are implemented as Python functions or methods that you
+    define in your Scrapy project. They are applied to specific fields of the scraped items,
+    allowing you to clean, validate, or transform the data as needed.
+    """
 
     # Input processors
     description_in = MapCompose(escape_html, strip_html)

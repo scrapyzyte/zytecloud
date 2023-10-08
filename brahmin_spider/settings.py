@@ -65,7 +65,8 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    "brahmin_spider.pipelines.BrahminSpiderPipeline": 300,
+    "brahmin_spider.pipelines.ValidateItemFilterPipeline": 300,
+    "brahmin_spider.pipelines.DuplicateItemFilterPipeline": 301,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

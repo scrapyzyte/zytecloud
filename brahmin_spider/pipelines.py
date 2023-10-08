@@ -11,11 +11,18 @@ from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
 
 
-def is_valid_link(link):
-    # Define a regular expression pattern to match URLs with http or https schemes and a domain.
+def is_valid_link(link: str) -> bool:
+    """
+    Define a regular expression pattern to match URLs with http or https schemes and a domain.
+
+    Args:
+        link (str): URL.
+
+    Returns:
+        bool: Return true if the link matches the pattern.
+    """
     pattern = r"^(http|https)://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}(/.*)?$"
     try:
-        # Use re.match to check if the link matches the pattern.
         if re.match(pattern, str(link)):
             return True
     except ValueError:
@@ -23,9 +30,17 @@ def is_valid_link(link):
     return False
 
 
-def is_valid_price(price):
-    # Implement your price validation logic here
-    # For example, check if the price is a valid number and within a certain range
+def is_valid_price(price: float) -> bool:
+    """
+    Implement your price validation logic here.
+    For example, check if the price is a valid number and within a certain range.
+
+    Args:
+        price (float): price.
+
+    Returns:
+        bool: Return true if price is valid.
+    """
     try:
         price = float(price)
         if price < 0:
@@ -35,16 +50,16 @@ def is_valid_price(price):
     return True
 
 
-def validate_data_type(item_adapter, data_type, validate_list):
+def validate_data_type(item_adapter: any, data_type: type, validate_list: list) -> bool:
     for field in validate_list:
-        field_value = item_adapter.get(field)
-        if not isinstance(field_value, data_type):
+        if not isinstance(item_adapter.get(field), data_type):
             raise DropItem(
                 f"Invalid data in '{field}' field. It should be a '{data_type}'."
             )
+    return True
 
 
-class BrahminSpiderPipeline:
+class ValidateItemFilterPipeline:
     # required_fields = ['product_id', 'link', 'product_name', "image_urls"]
     required_fields = [
         "product_name",
@@ -110,5 +125,27 @@ class BrahminSpiderPipeline:
         price = item_adapter.get("price")
         if not is_valid_price(price):
             raise DropItem(f"Invalid price value: {price}")
+
+        return item
+
+
+class DuplicateItemFilterPipeline:
+    def __init__(self):
+        self.seen_items = set()
+
+    def process_item(self, item, spider):
+        item_adapter = ItemAdapter(item)
+
+        product_id = item_adapter.get("product_id")
+        product_id = product_id.strip().lower() if product_id else ""
+
+        color = item_adapter.get("color")
+        color = color.strip().lower() if color else ""
+
+        item_key = f"{product_id}_{color}"
+
+        if item_key in self.seen_items:
+            raise DropItem(f'Duplicate item found: {item_key} ~> {item}')
+        self.seen_items.add(item_key)
 
         return item
